@@ -15,7 +15,7 @@
 ##Version    1.0
 
 #Set the working directory
-setwd("D:/DS/Coursera/GettingCleaningData/data")
+#setwd("D:/DS/Coursera/GettingCleaningData/data")
 
 #Create the vector for the file width, since the input files are fixed format.
 file_widths = c(-2,14)
@@ -101,8 +101,14 @@ for (i in 5:81)
 #Invoke ddply function to create the tidy data set
 X_tidy <- ddply(X_All, groupcol, function(x) colMeans(x[datacol]))
 
+#Tidy up the column names of the tidy data set further by removing braces and converting to lower case
+col_names <- colnames(X_tidy)
+cleaned <- function(x){gsub("\\()","", x)}
+col_names <- tolower(sapply(col_names,cleaned))
+colnames(X_tidy) <- col_names
+
 #Use write.table to write the tidy dataset into a file
-write.table(X_tidy,file = "X_tidy.txt",row.name=FALSE,sep = " " )
+write.table(X_tidy,file = "X_tidy.txt",row.name=FALSE,sep = " ",quote = FALSE )
 
 
 
